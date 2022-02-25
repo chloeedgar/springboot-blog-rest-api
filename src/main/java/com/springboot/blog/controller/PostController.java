@@ -8,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @RestController  // uses @Controller & @ResponseBody annotations. @ResponseBody to convert response (java obj) to JSON
 @RequestMapping("/api/posts")
 public class PostController {  // sometimes named PostRes (resource)
@@ -21,7 +23,7 @@ public class PostController {  // sometimes named PostRes (resource)
     // create blog post
 
     @PostMapping  // same as @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<PostDto> createPost(@RequestBody PostDto postDto) {
+    public ResponseEntity<PostDto> createPost(@Valid @RequestBody PostDto postDto) {
         return new ResponseEntity<>(postService.createPost(postDto), HttpStatus.CREATED);
     }
     // ResponseEntity represents a whole HTTP response - HTTP status, body, header
@@ -45,7 +47,7 @@ public class PostController {  // sometimes named PostRes (resource)
 
     // update post api
     @PutMapping("{id}")
-    public ResponseEntity<PostDto> updatePost(@RequestBody PostDto postDto, @PathVariable(name = "id") long id) {
+    public ResponseEntity<PostDto> updatePost(@Valid @RequestBody PostDto postDto, @PathVariable(name = "id") long id) {
         PostDto postResponse = postService.updatePost(postDto, id);
         return new ResponseEntity<>(postDto,HttpStatus.OK);
     }
